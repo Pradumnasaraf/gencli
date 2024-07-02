@@ -39,8 +39,11 @@ func getApiRespone(args []string) string {
 
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
+
 	if err != nil {
-		log.Fatal(err)
+		if strings.Contains(err.Error(), "GEMINI_API_KEY") {
+			log.Fatal("Please set the GEMINI_API_KEY environment variable. Check the README for more information.")
+		}
 	}
 	defer client.Close()
 
