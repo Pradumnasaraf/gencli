@@ -4,7 +4,6 @@ go 1.22
 
 require (
 	github.com/google/generative-ai-go v0.14.0
-	github.com/joho/godotenv v1.5.1
 	github.com/spf13/cobra v1.8.1
 	google.golang.org/api v0.185.0
 )

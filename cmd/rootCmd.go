@@ -7,7 +7,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Pradumnasaraf/gencli/config"
 	"github.com/google/generative-ai-go/genai"
 	"github.com/spf13/cobra"
 	"google.golang.org/api/option"
@@ -32,18 +31,13 @@ func Execute() {
 
 func getApiRespone(args []string) string {
 
-	// Load the environment variables
-	config.Config()
-
 	userArgs := strings.Join(args[1:], " ")
 
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
 
 	if err != nil {
-		if strings.Contains(err.Error(), "GEMINI_API_KEY") {
-			log.Fatal("Please set the GEMINI_API_KEY environment variable. Check the README for more information.")
-		}
+		log.Fatal(err)
 	}
 	defer client.Close()
 
