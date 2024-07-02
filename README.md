@@ -38,10 +38,12 @@ The above method sets the API key for the current session only. To set it perman
 
 #### Commands
 
-```
+```bash
 Usage:
-  gencli [your question] [flags]
+  gencli [your question] 
 ```
+
+>  eg: gencli how big is google
 
 ### 📜 License
 
