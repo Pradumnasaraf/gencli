@@ -1,6 +1,6 @@
 module github.com/Pradumnasaraf/gencli
 
-go 1.22.4
+go 1.22
 
 require (
 	github.com/google/generative-ai-go v0.14.0
