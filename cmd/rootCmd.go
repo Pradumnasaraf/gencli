@@ -14,7 +14,7 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "gencli [your question]",
-	Short: "Ask me anything :)",
+	Short: "A CLI tool to interact with the Gemini API",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		res := getApiRespone(args)

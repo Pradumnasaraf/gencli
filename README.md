@@ -1,4 +1,4 @@
-# GenCLI
+## GenCLI
 
 <div align="center">
 
@@ -8,11 +8,11 @@
 
 **GenCLI** is an AI-powered CLI tool that answers your questions. It is built with [Go](https://github.com/golang/go), [Cobra](https://github.com/spf13/cobra), [Viper](https://github.com/spf13/viper), [Gemini](https://gemini.google.com), and more.
 
-## 🚀 Getting Started
+### 🚀 Getting Started
 
 To get started with GenCLI, you can install it using the following method:
 
-### Installation
+#### Installation
 
 To install the CLI, use the command below:
 
@@ -22,7 +22,7 @@ go install github.com/Pradumnasaraf/gencli@latest
 
 Go will automatically install it in your `$GOPATH/bin` directory, which should be in your `$PATH`.
 
-### Usage
+#### Usage
 
 Once installed, you can use the `gencli` CLI command. To confirm installation, type `gencli` at the command line.
 
@@ -36,20 +36,17 @@ The above method sets the API key for the current session only. To set it perman
 
 > **Note:** If you encounter the error `command not found: gencli`, you need to add `$GOPATH/bin` to your `$PATH` environment variable. For more details, refer to [this guide](https://gist.github.com/Pradumnasaraf/ca6f9a0507089a4c44881446cdda4aa3).
 
-### Commands
+#### Commands
 
 ```
 Usage:
-  gencli [command]
-
-Available Commands:
-  gencli  Type your question here
+  gencli [your question] [flags]
 ```
 
-## 📜 License
+### 📜 License
 
 This project is licensed under the Apache-2.0 license - see the [LICENSE](LICENSE) file for details.
 
-## 🛡 Security
+### 🛡 Security
 
 If you discover a security vulnerability within this project, please check the [SECURITY](SECURITY.md) for more information.
