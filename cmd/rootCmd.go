@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Pradumnasaraf/GenCLI/config"
+	"github.com/Pradumnasaraf/gencli/config"
 	"github.com/google/generative-ai-go/genai"
 	"github.com/spf13/cobra"
 	"google.golang.org/api/option"

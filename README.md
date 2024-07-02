@@ -1,9 +1,50 @@
 # GenCLI
 
-TDB
+<div align="center">
 
-## Build With
+[![Releases](https://github.com/Pradumnasaraf/gencli/actions/workflows/releases.yml/badge.svg)](https://github.com/Pradumnasaraf/gencli/actions/workflows/releases.yml) [![Go Reference](https://pkg.go.dev/badge/github.com/Pradumnasaraf/gencli.svg)](https://pkg.go.dev/github.com/Pradumnasaraf/gencli)
 
-- Google Gemini API
+</div>
+
+**GenCLI** is a AI-powered CLI tool that knows answers to all your questions. It is built with [Go](https://github.com/golang/go), [Cobra](https://github.com/spf13/cobra), [Viper](https://github.com/spf13/viper), [Gemini](https://gemini.google.com), etc.
 
 
+## 🚀 Getting Started
+
+To get started with GenCLI, you can install it using the following methods:
+
+To install the CLI, use the command below:
+
+```bash
+go install github.com/Pradumnasaraf/gencli@latest
+```
+
+Go will automatically install it in your `$GOPATH/bin` directory, which should be in your `$PATH`.
+
+Once installed, you can use the `gencli` CLI command. To confirm installation, type `gencli` at the command line.
+
+As it uses the Google Gemini API to we need to set the API key. To get the API key (It's FREE), you need to visit [here](https://aistudio.google.com/app/apikey?_gl=1*1n5ijhw*_ga*MTQxNDQ2MjcyNi4xNzE5MDU4OTE0*_ga_P1DBVKWT6V*MTcxOTkzNTQzOC4zLjEuMTcxOTkzNTQ3My4yNS4wLjEzODczMjU2OA) and set it in the environment variable `GENCLI_API_KEY`.
+
+```bash
+export GENCLI_API_KEY=<API_KEY>
+```
+
+Above method will set the API key for the current session only. To set it permanently, you can add the above line to your `.bashrc` or `.zshrc` file.
+
+> **Note** If you are getting an error like `command not found: gencli`, then you need to add `$GOPATH/bin` to your `$PATH` environment variable. For that you can refer to [this](https://gist.github.com/Pradumnasaraf/ca6f9a0507089a4c44881446cdda4aa3). 
+
+```
+Usage:
+  gencli [command]
+
+Available Commands:
+  gencli  Type your question here
+```
+
+## 📜 License
+
+This project is licensed under the Apache-2.0 license - see the [LICENSE](LICENSE) file for details.
+
+## 🛡 Security
+
+If you discover a security vulnerability within this project, please check the [SECURITY](SECURITY.md) for more information.

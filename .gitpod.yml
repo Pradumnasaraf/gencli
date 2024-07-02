@@ -4,7 +4,7 @@ tasks:
       go mod download
     command: | 
       go build .
-      ./GenCLI
+      ./gencli
 
 
 github:

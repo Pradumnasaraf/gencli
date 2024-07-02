@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Pradumnasaraf/GenCLI/cmd"
+	"github.com/Pradumnasaraf/gencli/cmd"
 )
 
 func main() {

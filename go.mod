@@ -1,4 +1,4 @@
-module github.com/Pradumnasaraf/GenCLI
+module github.com/Pradumnasaraf/gencli
 
 go 1.22.4
 
