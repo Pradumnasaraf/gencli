@@ -6,7 +6,7 @@
 
 </div>
 
-**GenCLI** is an AI-powered CLI tool built using Golang that answers your questions by utilizing the Google Gemini API under the hood. It is developed using [Cobra](https://github.com/spf13/cobra), [Viper](https://github.com/spf13/viper), [Gemini](https://gemini.google.com), and more.
+**GenCLI** is an AI-powered CLI tool built with Golang that answers your questions using the [Google Gemini API](https://gemini.google.com). It is developed with [Cobra](https://github.com/spf13/cobra), [Viper](https://github.com/spf13/viper), and more.
 
 ### 🚀 Getting Started
 
