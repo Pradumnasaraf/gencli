@@ -7,15 +7,14 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Pradumnasaraf/gencli/config"
 	"github.com/google/generative-ai-go/genai"
 	"github.com/spf13/cobra"
 	"google.golang.org/api/option"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "gencli",
-	Short: "Ask me anything :)",
+	Use:   "gencli [your question]",
+	Short: "A CLI tool to interact with the Gemini API",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		res := getApiRespone(args)
@@ -32,13 +31,11 @@ func Execute() {
 
 func getApiRespone(args []string) string {
 
-	// Load the environment variables
-	config.Config()
-
 	userArgs := strings.Join(args[1:], " ")
 
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
+
 	if err != nil {
 		log.Fatal(err)
 	}
