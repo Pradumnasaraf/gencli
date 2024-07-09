@@ -8,7 +8,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "gc",
+	Use:   "gencli",
 	Short: "A CLI tool to interact with the Gemini API",
 	Run: func(cmd *cobra.Command, args []string) {
 		err := cmd.Help()
