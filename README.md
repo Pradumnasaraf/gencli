@@ -8,6 +8,8 @@
 
 **GenCLI** is an AI-powered CLI tool built with Golang that answers your questions using the [Google Gemini API](https://gemini.google.com). It is developed with [Cobra](https://github.com/spf13/cobra) and more.
 
+![GenCLI GIF](https://github.com/Pradumnasaraf/gencli/assets/51878265/f230a612-c51b-45b1-bbab-772110efcaf4)
+
 ### 🚀 Getting Started
 
 To get started with GenCLI, you can install it using the following method:
@@ -40,7 +42,15 @@ The above method sets the API key for the current session only. To set it perman
 
 ```bash
 Usage:
-  gencli [your question] 
+  gencli [flags]
+  gencli [command]
+
+Available Commands:
+  help        Help about any command
+  search      Ask a question and get a response
+
+Flags:
+  -h, --help   help for gencli
 ```
 
 >  eg: gencli how big is google
