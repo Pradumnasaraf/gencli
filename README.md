@@ -53,7 +53,7 @@ Flags:
   -h, --help   help for gencli
 ```
 
->  eg: gencli how big is google
+>  eg: gencli search how big is google
 
 ### 📜 License
 
