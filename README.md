@@ -54,6 +54,7 @@ Flags:
 ```
 
 >  eg: gencli search how big is google
+>  eg: gencli search what is kubernetes --words 525
 
 ### 📜 License
 

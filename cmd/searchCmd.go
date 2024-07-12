@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/google/generative-ai-go/genai"
@@ -12,8 +13,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-// response word count
-var numWords int = 150
+var numWords string = "150"
 
 var searchCmd = &cobra.Command{
 	Use:   "search [your question]",
@@ -31,17 +31,19 @@ func getApiRespone(args []string) string {
 
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
+	checkNilError(err)
 
-	if err != nil {
-		log.Fatal(err)
-	}
 	defer client.Close()
 
-	model := client.GenerativeModel("gemini-1.5-flash")
-	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+" in "+fmt.Sprint(numWords)+" words."))
+	// Validate user input is a number
+	_, err = strconv.Atoi(numWords)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Invalid number of words")
 	}
+
+	model := client.GenerativeModel("gemini-1.5-flash")
+	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+" in "+numWords+" words."))
+	checkNilError(err)
 
 	finalResponse := resp.Candidates[0].Content.Parts[0]
 
@@ -49,5 +51,11 @@ func getApiRespone(args []string) string {
 }
 
 func init() {
-	searchCmd.Flags().IntVarP(&numWords, "words", "w", 150, "Specify the number of words in the response")
+	searchCmd.Flags().StringVarP(&numWords, "words", "w", "150", "Number of words in the response")
+}
+
+func checkNilError(e error) {
+	if e != nil {
+		log.Fatal(e)
+	}
 }
