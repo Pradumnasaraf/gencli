@@ -28,5 +28,6 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(chatCmd)
+	rootCmd.AddCommand(searchCmd)
+
 }
