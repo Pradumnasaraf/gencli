@@ -38,8 +38,7 @@ func getApiRespone(args []string) string {
 	defer client.Close()
 
 	model := client.GenerativeModel("gemini-1.5-flash")
-	fmt.Println(userArgs+" in "+fmt.Sprint(numWords)+" words.")
-	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+"in"+fmt.Sprint(numWords)+"words."))
+	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+" in "+fmt.Sprint(numWords)+" words."))
 	if err != nil {
 		log.Fatal(err)
 	}
