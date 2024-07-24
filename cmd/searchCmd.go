@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -20,19 +21,17 @@ var searchCmd = &cobra.Command{
 	Short: "Ask a question and get a response",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		res := getApiRespone(args)
+		res := getApiResponse(args)
 		fmt.Println(res)
 	},
 }
 
-func getApiRespone(args []string) string {
-
+func getApiResponse(args []string) string {
 	userArgs := strings.Join(args[0:], " ")
 
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
 	checkNilError(err)
-
 	defer client.Close()
 
 	// Validate user input is a number
@@ -47,7 +46,31 @@ func getApiRespone(args []string) string {
 
 	finalResponse := resp.Candidates[0].Content.Parts[0]
 
-	return fmt.Sprint(finalResponse)
+	return formatAsPlainText(fmt.Sprint(finalResponse))
+}
+
+func formatAsPlainText(input string) string {
+	// Remove Markdown headings
+	re := regexp.MustCompile(`^#{1,6}\s+(.*)`)
+	input = re.ReplaceAllString(input, "$1")
+
+	// Remove horizontal rules
+	re = regexp.MustCompile(`\n---\n`)
+	input = re.ReplaceAllString(input, "\n")
+
+	// Remove italic formatting
+	re = regexp.MustCompile(`_([^_]+)_`)
+	input = re.ReplaceAllString(input, "$1")
+
+	// Remove bold formatting
+	re = regexp.MustCompile(`\*\*([^*]+)\*\*`)
+	input = re.ReplaceAllString(input, "$1")
+
+	// Remove bullet points
+	re = regexp.MustCompile(`\n\* (.*)`)
+	input = re.ReplaceAllString(input, "\n- $1")
+
+	return input
 }
 
 func init() {
