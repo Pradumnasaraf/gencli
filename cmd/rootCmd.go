@@ -29,5 +29,5 @@ func Execute() {
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
-
+	rootCmd.AddCommand(imageCmd)
 }

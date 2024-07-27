@@ -31,7 +31,7 @@ func getApiResponse(args []string) string {
 
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
-	checkNilError(err)
+	CheckNilError(err)
 	defer client.Close()
 
 	// Validate user input is a number
@@ -42,7 +42,7 @@ func getApiResponse(args []string) string {
 
 	model := client.GenerativeModel("gemini-1.5-flash")
 	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+" in "+numWords+" words."))
-	checkNilError(err)
+	CheckNilError(err)
 
 	finalResponse := resp.Candidates[0].Content.Parts[0]
 
@@ -77,8 +77,3 @@ func init() {
 	searchCmd.Flags().StringVarP(&numWords, "words", "w", "150", "Number of words in the response")
 }
 
-func checkNilError(e error) {
-	if e != nil {
-		log.Fatal(e)
-	}
-}
