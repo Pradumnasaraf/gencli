@@ -53,8 +53,12 @@ func imageFunc(args []string) string {
 }
 
 func init() {
+	
 	imageCmd.Flags().StringVarP(&imageFilePath, "path", "p", "", "Enter the image path")
 	imageCmd.Flags().StringVarP(&imageFileFormat, "format", "f", "", "Enter the image format (jpeg, png, etc.)")
-	imageCmd.MarkFlagRequired("path")
-	imageCmd.MarkFlagRequired("format")
+
+	errPathF := imageCmd.MarkFlagRequired("path")
+	errFormatF := imageCmd.MarkFlagRequired("format")
+	CheckNilError(errPathF)
+	CheckNilError(errFormatF)
 }
