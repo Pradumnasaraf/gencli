@@ -76,4 +76,3 @@ func formatAsPlainText(input string) string {
 func init() {
 	searchCmd.Flags().StringVarP(&numWords, "words", "w", "150", "Number of words in the response")
 }
-
