@@ -39,6 +39,7 @@ func imageFunc(args []string) string {
 	imgData, err := os.ReadFile(imageFilePath)
 	CheckNilError(err)
 
+	// Supports multiple image inputs
 	prompt := []genai.Part{
 		genai.ImageData(imageFileFormat, imgData),
 		genai.Text(userArgs),
@@ -53,10 +54,8 @@ func imageFunc(args []string) string {
 }
 
 func init() {
-	
 	imageCmd.Flags().StringVarP(&imageFilePath, "path", "p", "", "Enter the image path")
 	imageCmd.Flags().StringVarP(&imageFileFormat, "format", "f", "", "Enter the image format (jpeg, png, etc.)")
-
 	errPathF := imageCmd.MarkFlagRequired("path")
 	errFormatF := imageCmd.MarkFlagRequired("format")
 	CheckNilError(errPathF)
