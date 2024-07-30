@@ -18,7 +18,8 @@ var numWords string = "150"
 
 var searchCmd = &cobra.Command{
 	Use:   "search [your question]",
-	Short: "Ask a question and get a response",
+	Example: "gencli search 'What is new in Golang?'",
+	Short: "Ask a question and get a response (Please put your question in quotes)",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		res := getApiResponse(args)

@@ -17,7 +17,9 @@ var (
 )
 
 var imageCmd = &cobra.Command{
-	Use:   "image [your question] --path [image path] --format [image format]",
+	Use: "image [your question] --path [image path] --format [image format]",
+	Example: "gencli image 'What this image is about?' --path cat.png --format png",
+	
 	Short: "Know details about an image (Please put your question in quotes)",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
