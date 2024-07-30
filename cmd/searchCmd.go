@@ -20,6 +20,7 @@ var searchCmd = &cobra.Command{
 	Use:   "search [your question]",
 	Example: "gencli search 'What is new in Golang?'",
 	Short: "Ask a question and get a response (Please put your question in quotes)",
+	Long: "Ask a question and get a response in a specified number of words. The default number of words is 150. You can change the number of words by using the --words flag.",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		res := getApiResponse(args)
