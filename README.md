@@ -47,14 +47,15 @@ Usage:
 
 Available Commands:
   help        Help about any command
-  search      Ask a question and get a response
+  image       Know details about an image (Please put your question in quotes)
+  search      Ask a question and get a response (Please put your question in quotes)
 
 Flags:
   -h, --help   help for gencli
 ```
 
->  eg: gencli search how big is google
->  eg: gencli search what is kubernetes --words 525
+>  eg: gencli search "What is kubernetes" --words 525
+>  eg: gencli image "What is this image about?" --path /path/to/image.jpg --format jpg
 
 ### 📜 License
 
