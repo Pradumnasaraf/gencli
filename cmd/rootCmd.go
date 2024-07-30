@@ -10,6 +10,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "gencli",
 	Short: "A CLI tool to interact with the Gemini API",
+	Long:  "A CLI tool to interact with the Gemini API. You can ask questions and get responses in text or image format.",
 	Run: func(cmd *cobra.Command, args []string) {
 		err := cmd.Help()
 		if err != nil {
