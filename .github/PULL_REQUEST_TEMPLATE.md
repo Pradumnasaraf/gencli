@@ -18,6 +18,7 @@
 - [ ] This PR does not contain plagiarized content.
 - [ ] The title of my pull request is a short description of the requested changes.
 - [ ] I have updated the documentation accordingly (if required).
+- [ ] Update the version of the `CliVersion` variable in `cmd/version.go` file (if their is a version change).
 
 ### 📄 Note to reviewers <!-- Add notes to reviewers if applicable -->
 
