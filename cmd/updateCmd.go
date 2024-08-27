@@ -17,11 +17,6 @@ var updateCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	rootCmd.AddCommand(updateCmd)
-
-}
-
 func update() {
 	cmd := exec.Command("go", "install", "github.com/Pradumnasaraf/gencli@latest")
 	_, err := cmd.Output()
@@ -31,5 +26,9 @@ func update() {
 		return
 	}
 
-	fmt.Printf("CLI updated successfully to the latest version (If any). Current version is: %s", CliVersion)
+	fmt.Printf("CLI updated successfully to the latest version (If any). Current version is: %s\n", CliVersion)
+}
+
+func init() {
+	rootCmd.AddCommand(updateCmd)
 }
