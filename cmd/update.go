@@ -10,13 +10,8 @@ import (
 // updateCmd represents the update command
 var updateCmd = &cobra.Command{
 	Use:   "update",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Update gencli to the latest version",
+	Long:  `This command will help you to update gencli to the latest version.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		update()
 	},
@@ -29,12 +24,12 @@ func init() {
 
 func update() {
 	cmd := exec.Command("go", "install", "github.com/Pradumnasaraf/gencli@latest")
-	output, err := cmd.Output()
+	_, err := cmd.Output()
 
 	if err != nil {
 		fmt.Println("Error executing command:", err)
 		return
 	}
 
-	fmt.Println(string(output))
+	fmt.Printf("CLI updated successfully to the latest version (If any). Current version is: %s", CliVersion)
 }
