@@ -49,12 +49,15 @@ Available Commands:
   help        Help about any command
   image       Know details about an image (Please put your question in quotes)
   search      Ask a question and get a response (Please put your question in quotes)
+  update      Update gencli to the latest version
+  version     Know the installed version of gencli
 
 Flags:
   -h, --help   help for gencli
 ```
 
 >  eg: gencli search "What is kubernetes" --words 525
+
 >  eg: gencli image "What is this image about?" --path /path/to/image.jpg --format jpg
 
 ### 📜 License
