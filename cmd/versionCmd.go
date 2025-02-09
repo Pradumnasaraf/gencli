@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const CliVersion = "v1.5.0"
+const CliVersion = "v1.6.0"
 
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
@@ -14,7 +14,7 @@ var versionCmd = &cobra.Command{
 	Short: "Know the installed version of gencli",
 	Long:  `This command will help you to know the installed version of gencli`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("gencli version:", CliVersion)
+		fmt.Println("gencli version:", CliVersion, "\nTo check and update the latest version, run 'gencli update'")
 	},
 }
 

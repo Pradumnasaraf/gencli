@@ -16,7 +16,7 @@ func main() {
 		return
 	}
 
-	// Execute the root command
+	cmd.SetDefaultConfig()
+	cmd.CheckAPIKey()
 	cmd.Execute()
-
 }
