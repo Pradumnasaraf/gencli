@@ -31,9 +31,7 @@ func setModelConfig() {
 	}
 
 	err := survey.AskOne(prompt, &selected)
-	if err != nil {
-		fmt.Println("Error:", err)
-	}
+	CheckNilError(err)
 
 	switch selected {
 	case "Gemini 2.0 Flash":

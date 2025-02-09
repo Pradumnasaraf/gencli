@@ -21,10 +21,7 @@ func update() {
 	cmd := exec.Command("go", "install", "github.com/Pradumnasaraf/gencli@latest")
 	_, err := cmd.Output()
 
-	if err != nil {
-		fmt.Println("Error executing command:", err)
-		return
-	}
+	CheckNilError(err)
 
 	fmt.Printf("CLI updated successfully to the latest version (If any).")
 }

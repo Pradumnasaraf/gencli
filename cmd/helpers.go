@@ -79,3 +79,9 @@ func getHomeDir() string {
 	}
 	return homeDir
 }
+
+func CheckNilError(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
