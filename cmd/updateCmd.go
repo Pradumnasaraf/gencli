@@ -26,7 +26,7 @@ func update() {
 		return
 	}
 
-	fmt.Printf("CLI updated successfully to the latest version (If any). Current version is: %s\n", CliVersion)
+	fmt.Printf("CLI updated successfully to the latest version (If any).")
 }
 
 func init() {
