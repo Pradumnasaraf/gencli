@@ -16,6 +16,7 @@
 - **Image Analysis**: Get details about an image.
 - **Search**: Ask a question and get a response.
 - **Update**: easily update GenCLI to the latest version with a single command.
+- **Output Language**: Get the response in your preferred language.
 
 ### 🚀 Getting Started
 
@@ -43,7 +44,8 @@ export GEMINI_API_KEY=<API_KEY>
 
 The above method sets the API key for the current session only. To set it permanently, add the above line to your `.bashrc` or `.zshrc` file.
 
-> **Note:** If you encounter the error `command not found: gencli`, you need to add `$GOPATH/bin` to your `$PATH` environment variable. For more details, refer to [this guide](https://gist.github.com/Pradumnasaraf/ca6f9a0507089a4c44881446cdda4aa3).
+> [!NOTE]  
+> If you encounter the error `command not found: gencli`, you need to add `$GOPATH/bin` to your `$PATH` environment variable. For more details, refer to [this guide](https://gist.github.com/Pradumnasaraf/ca6f9a0507089a4c44881446cdda4aa3).
 
 #### Commands
 

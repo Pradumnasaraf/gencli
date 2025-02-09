@@ -12,8 +12,9 @@ import (
 )
 
 var (
-	imageFilePath   string
-	imageFileFormat string
+	imageFilePath       string
+	imageFileFormat     string
+	outputLanguageImage string
 )
 
 var imageCmd = &cobra.Command{
@@ -45,7 +46,7 @@ func imageFunc(args []string) string {
 	// Supports multiple image inputs
 	prompt := []genai.Part{
 		genai.ImageData(imageFileFormat, imgData),
-		genai.Text(userArgs),
+		genai.Text(fmt.Sprintf(userArgs, " in ", outputLanguageImage, "language")),
 	}
 
 	resp, err := model.GenerateContent(ctx, prompt...)
@@ -59,8 +60,11 @@ func imageFunc(args []string) string {
 func init() {
 	imageCmd.Flags().StringVarP(&imageFilePath, "path", "p", "", "Enter the image path")
 	imageCmd.Flags().StringVarP(&imageFileFormat, "format", "f", "", "Enter the image format (jpeg, png, etc.)")
+	imageCmd.Flags().StringVarP(&outputLanguageImage, "language", "l", "english", "Enter the language for the output")
 	errPathF := imageCmd.MarkFlagRequired("path")
 	errFormatF := imageCmd.MarkFlagRequired("format")
+	errLanguageF := imageCmd.MarkFlagRequired("language")
 	CheckNilError(errPathF)
 	CheckNilError(errFormatF)
+	CheckNilError(errLanguageF)
 }
