@@ -10,6 +10,13 @@
 
 ![GenCLI GIF](https://github.com/Pradumnasaraf/gencli/assets/51878265/f230a612-c51b-45b1-bbab-772110efcaf4)
 
+### 📦 Features
+
+- **Dynamic Model selection**: Choose from a variety of GenAI models to get the best results.
+- **Image Analysis**: Get details about an image.
+- **Search**: Ask a question and get a response.
+- **Update**: easily update GenCLI to the latest version with a single command.
+
 ### 🚀 Getting Started
 
 To get started with GenCLI, you can install it using the following method:
@@ -48,6 +55,7 @@ Usage:
 Available Commands:
   help        Help about any command
   image       Know details about an image (Please put your question in quotes)
+  model       To select a different GenAI model
   search      Ask a question and get a response (Please put your question in quotes)
   update      Update gencli to the latest version
   version     Know the installed version of gencli
@@ -57,7 +65,7 @@ Flags:
 ```
 
 >  eg: gencli search "What is kubernetes" --words 525
-
+>
 >  eg: gencli image "What is this image about?" --path /path/to/image.jpg --format jpg
 
 ### 📜 License

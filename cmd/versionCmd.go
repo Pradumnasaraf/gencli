@@ -14,7 +14,7 @@ var versionCmd = &cobra.Command{
 	Short: "Know the installed version of gencli",
 	Long:  `This command will help you to know the installed version of gencli`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("gencli version:", CliVersion)
+		fmt.Println("gencli version:", CliVersion, "\nTo check and update the latest version, run 'gencli update'")
 	},
 }
 
