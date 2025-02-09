@@ -36,7 +36,8 @@ func imageFunc(args []string) string {
 	CheckNilError(err)
 	defer client.Close()
 
-	model := client.GenerativeModel("gemini-1.5-flash")
+	currentGenaiModel := GetConfig("genai_model")
+	model := client.GenerativeModel(currentGenaiModel)
 
 	imgData, err := os.ReadFile(imageFilePath)
 	CheckNilError(err)

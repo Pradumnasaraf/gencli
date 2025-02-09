@@ -14,7 +14,10 @@ import (
 	"google.golang.org/api/option"
 )
 
-var numWords string = "150"
+var (
+	numWords       string = "150"
+	outputLanguage string = "english"
+)
 
 var searchCmd = &cobra.Command{
 	Use:     "search [your question]",
@@ -42,8 +45,9 @@ func getApiResponse(args []string) string {
 		log.Fatal("Invalid number of words")
 	}
 
-	model := client.GenerativeModel("gemini-1.5-flash")
-	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+" in "+numWords+" words."))
+	currentGenaiModel := GetConfig("genai_model")
+	model := client.GenerativeModel(currentGenaiModel)
+	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+" in "+numWords+" words"+" in "+outputLanguage+" language"))
 	CheckNilError(err)
 
 	finalResponse := resp.Candidates[0].Content.Parts[0]
@@ -77,4 +81,5 @@ func formatAsPlainText(input string) string {
 
 func init() {
 	searchCmd.Flags().StringVarP(&numWords, "words", "w", "150", "Number of words in the response")
+	searchCmd.Flags().StringVarP(&outputLanguage, "language", "l", "english", "Output language")
 }
