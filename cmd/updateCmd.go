@@ -23,7 +23,7 @@ func update() {
 
 	CheckNilError(err)
 
-	fmt.Printf("CLI updated successfully to the latest version (If any).")
+	fmt.Printf("CLI updated successfully to the latest version (If any).\n")
 }
 
 func init() {
