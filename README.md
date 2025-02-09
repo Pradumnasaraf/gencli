@@ -6,7 +6,7 @@
 
 </div>
 
-**GenCLI** is an AI-powered CLI tool built with Golang that answers your questions using the [Google Gemini API](https://gemini.google.com). It is developed with [Cobra](https://github.com/spf13/cobra) and more.
+**GenCLI** is an AI-powered CLI tool built with Golang that answers your questions using the [Google Gemini API](https://gemini.google.com). It is developed with [Cobra](https://github.com/spf13/cobra) and [Viper](https://github.com/spf13/viper) libraries.
 
 ![GenCLI GIF](https://github.com/Pradumnasaraf/gencli/assets/51878265/f230a612-c51b-45b1-bbab-772110efcaf4)
 
@@ -33,7 +33,7 @@ Go will automatically install it in your `$GOPATH/bin` directory, which should b
 
 #### Usage
 
-Once installed, you can use the `gencli` CLI command. To confirm installation, type `gencli` at the command line.
+Once installed, you can use the `gencli` CLI command. To confirm installation, type `gencli` at the command line. All the CLI config (like current GenAI Model, etc) is store in `~/.gencli` directory.
 
 GenCLI uses the Google Gemini API, so you need to set the API key. To get the API key (It's FREE), visit [here](https://aistudio.google.com/app/apikey?_gl=1*1n5ijhw*_ga*MTQxNDQ2MjcyNi4xNzE5MDU4OTE0*_ga_P1DBVKWT6V*MTcxOTkzNTQzOC4zLjEuMTcxOTkzNTQ3My4yNS4wLjEzODczMjU2OA) and set it in the environment variable `GEMINI_API_KEY`:
 
