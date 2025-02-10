@@ -19,7 +19,8 @@ var (
 	numWords       string  = "150"
 	outputLanguage string  = "english"
 	temperature    float32 = 0.7
-	outputFile     string  = ""
+	saveOutput     bool
+	outputFile     string
 )
 
 var searchCmd = &cobra.Command{
@@ -31,18 +32,24 @@ var searchCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		res := getApiResponse(args)
 
-		if outputFile != "" {
-			dir := filepath.Dir(outputFile)
-			if dir != "." {
+		if saveOutput {
+			filename := outputFile
+			if filename == "" {
+				filename = "gencli-output.txt"
+			}
+
+			// Create directory if it doesn't exist
+			if dir := filepath.Dir(filename); dir != "." {
 				err := os.MkdirAll(dir, 0755)
 				CheckNilError(err)
 			}
-			err := os.WriteFile(outputFile, []byte(res), 0644)
-			CheckNilError(err)
-			fmt.Printf("Response saved to: %s\n", outputFile)
-		}
 
-		fmt.Println(res)
+			err := os.WriteFile(filename, []byte(res), 0644)
+			CheckNilError(err)
+			fmt.Printf("Response saved to: %s\n", filename)
+		} else {
+			fmt.Println(res)
+		}
 	},
 }
 
@@ -99,5 +106,6 @@ func init() {
 	searchCmd.Flags().StringVarP(&numWords, "words", "w", "150", "Number of words in the response")
 	searchCmd.Flags().StringVarP(&outputLanguage, "language", "l", "english", "Output language")
 	searchCmd.Flags().Float32VarP(&temperature, "temperature", "t", 0.7, "Response creativity (0.0-1.0)")
-	searchCmd.Flags().StringVarP(&outputFile, "save", "s", "", "Save response to file")
+	searchCmd.Flags().BoolVarP(&saveOutput, "save", "s", false, "Save response to file")
+	searchCmd.Flags().StringVarP(&outputFile, "output", "o", "", "Specify output filename")
 }
