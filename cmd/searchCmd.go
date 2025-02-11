@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -18,7 +19,8 @@ var (
 	numWords       string  = "150"
 	outputLanguage string  = "english"
 	temperature    float32 = 0.7
-	saveOutput     string
+	saveOutput     bool
+	outputFile     string
 )
 
 var searchCmd = &cobra.Command{
@@ -29,17 +31,22 @@ var searchCmd = &cobra.Command{
 	Args:    cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		res := getApiResponse(args)
-		filename, _ := cmd.Flags().GetString("save-output")
-		if filename == "" {
-			filename = "output.txt"
-		}
-		if cmd.Flags().Changed("save-output") {
-			err := os.WriteFile(filename, []byte(res), 0644)
+
+		if saveOutput {
+			// Create directory if it doesn't exist
+			dir := filepath.Dir(outputFile)
+			if dir != "." {
+				err := os.MkdirAll(dir, 0755)
+				CheckNilError(err)
+			}
+
+			err := os.WriteFile(outputFile, []byte(res), 0644)
 			CheckNilError(err)
-			fmt.Printf("Response saved to: %s\n", filename)
+			fmt.Printf("Response saved to: %s\n", outputFile)
 		} else {
 			fmt.Println(res)
 		}
+
 	},
 }
 
@@ -95,8 +102,6 @@ func init() {
 	searchCmd.Flags().StringVarP(&numWords, "words", "w", "150", "Number of words in the response")
 	searchCmd.Flags().StringVarP(&outputLanguage, "language", "l", "english", "Output language")
 	searchCmd.Flags().Float32VarP(&temperature, "temperature", "t", 0.7, "Response creativity (0.0-1.0)")
-
-	// Corrected flag handling
-	searchCmd.Flags().StringVarP(&saveOutput, "save-output", "s", "", "Save response to a file (default: output.txt if used without a value)")
-	searchCmd.Flags().Lookup("save-output").NoOptDefVal = "output.txt" // If no argument, default to output.txt
+	searchCmd.Flags().BoolVarP(&saveOutput, "save", "s", false, "Save the output to a file")
+	searchCmd.Flags().StringVarP(&outputFile, "output", "o", "output.txt", "Output file name")
 }
