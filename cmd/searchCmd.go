@@ -16,9 +16,9 @@ import (
 )
 
 var (
-	numWords       string  = "150"
-	outputLanguage string  = "english"
-	temperature    float32 = 0.7
+	numWords       string
+	outputLanguage string
+	temperature    float32
 	saveOutput     bool
 	outputFile     string
 )
@@ -46,7 +46,6 @@ var searchCmd = &cobra.Command{
 		} else {
 			fmt.Println(res)
 		}
-
 	},
 }
 
@@ -66,6 +65,7 @@ func getApiResponse(args []string) string {
 
 	currentGenaiModel := GetConfig("genai_model")
 	model := client.GenerativeModel(currentGenaiModel)
+	model.SetTemperature(temperature)
 	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+" in "+numWords+" words"+" in "+outputLanguage+" language"))
 	CheckNilError(err)
 
@@ -101,7 +101,7 @@ func formatAsPlainText(input string) string {
 func init() {
 	searchCmd.Flags().StringVarP(&numWords, "words", "w", "150", "Number of words in the response")
 	searchCmd.Flags().StringVarP(&outputLanguage, "language", "l", "english", "Output language")
-	searchCmd.Flags().Float32VarP(&temperature, "temperature", "t", 0.7, "Response creativity (0.0-1.0)")
+	searchCmd.Flags().Float32VarP(&temperature, "temperature", "t", 0.5, "Response creativity (0.0-1.0)")
 	searchCmd.Flags().BoolVarP(&saveOutput, "save", "s", false, "Save the output to a file")
 	searchCmd.Flags().StringVarP(&outputFile, "output", "o", "output.txt", "Output file name")
 }
