@@ -49,6 +49,8 @@ The above method sets the API key for the current session only. To set it perman
 
 #### Commands
 
+Below is the list of commands available in GenCLI:
+
 ```bash
 Usage:
   gencli [flags]
@@ -66,9 +68,26 @@ Flags:
   -h, --help   help for gencli
 ```
 
->  eg: gencli search "What is kubernetes" --words 525
->
->  eg: gencli image "What is this image about?" --path /path/to/image.jpg --format jpg
+An overview of subcommands with all the available options:
+
+```bash
+Usage:
+  gencli image [your question] --path [image path] --format [image format] [flags]
+
+Examples:
+gencli image 'What this image is about?' --path cat.png --format png
+
+Flags:
+  -f, --format string         Enter the image format (jpeg, png, etc.) (default "jpeg")
+  -h, --help                  help for image
+  -l, --language string       Enter the language for the output (default "english")
+  -o, --output string         Output file name (default "output.txt")
+  -p, --path string           Enter the image path
+  -s, --save                  Save the output to a file
+  -t, --temperature float32   Response creativity (0.0-1.0) (default 0.5)
+```
+
+This is for the `image` subcommand. Same goes for the `search` and other subcommands.
 
 ### 📜 License
 
