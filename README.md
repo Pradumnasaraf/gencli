@@ -17,6 +17,7 @@
 - **Search**: Ask a question and get a response.
 - **Update**: easily update GenCLI to the latest version with a single command.
 - **Output Language**: Get the response in your preferred language.
+- **Temperature**: Control the creativity of the response.
 
 ### 🚀 Getting Started
 
