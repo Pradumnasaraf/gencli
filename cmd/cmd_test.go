@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"io"
 	"os"
+	"os/exec"
+	"runtime"
 	"testing"
 
 	"github.com/spf13/cobra"
@@ -69,5 +71,54 @@ func TestVersionCommand(t *testing.T) {
 		assert.NoError(t, err)
 		// Verify that the output contains the expected version (e.g., "v1.6.3").
 		assert.Contains(t, output, "v1.6.3")
+	})
+}
+
+// TestUpdateCommand tests the 'update' subcommand which is responsible for updating the CLI.
+// It uses a mocked execCommand to simulate both successful and failing update scenarios.
+func TestUpdateCommand(t *testing.T) {
+	// Backup the original execCommand function.
+	originalExecCommand := execCommand
+	// Restore execCommand after the test completes.
+	defer func() { execCommand = originalExecCommand }()
+
+	t.Run("successful_update", func(t *testing.T) {
+		// Override execCommand to simulate a successful update.
+		execCommand = func(name string, args ...string) *exec.Cmd {
+			if runtime.GOOS == "windows" {
+				// On Windows, use "cmd /C echo" to simulate a successful response.
+				cmdArgs := append([]string{"/C", "echo", "successful update"}, args...)
+				cmd := exec.Command("cmd", cmdArgs...)
+				cmd.Env = []string{"GO_WANT_HELPER_PROCESS=1"}
+				return cmd
+			}
+			// On Unix-like systems, directly use echo.
+			cmd := exec.Command("echo", append([]string{"successful update"}, args...)...)
+			cmd.Env = []string{"GO_WANT_HELPER_PROCESS=1"}
+			return cmd
+		}
+
+		// Execute the update command.
+		output, err := executeCommand(t, rootCmd, "update")
+		// Verify that the command executed without error.
+		assert.NoError(t, err)
+		// Confirm that the output contains a success message.
+		assert.Contains(t, output, "CLI updated successfully")
+	})
+
+	t.Run("failed_update", func(t *testing.T) {
+		// Override execCommand to simulate a failing update.
+		execCommand = func(name string, args ...string) *exec.Cmd {
+			if runtime.GOOS == "windows" {
+				// Simulate failure on Windows by exiting with a non-zero status.
+				return exec.Command("cmd", "/C", "exit", "1")
+			}
+			// On Unix-like systems, use the false command which always fails.
+			return exec.Command("false")
+		}
+
+		// Execute the update command and expect an error.
+		_, err := executeCommand(t, rootCmd, "update")
+		assert.Error(t, err)
 	})
 }
