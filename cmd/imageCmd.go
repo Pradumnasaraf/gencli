@@ -28,7 +28,7 @@ var imageCmd = &cobra.Command{
 	Long:    "Ask a question about an image and get a response. You need to provide the path of the image and the format of the image. The supported formats are jpg, jpeg, png, and gif.",
 	Args:    cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		res := getApiResponseImage(args)
+		res := getApiResponseImageFunc(args)
 		if saveResponse {
 			// Create directory if it doesn't exist
 			dir := filepath.Dir(saveResponseFile)
@@ -46,7 +46,10 @@ var imageCmd = &cobra.Command{
 	},
 }
 
-func getApiResponseImage(args []string) string {
+// This function is used to get the response from the GenAI API, and was created to allow for testing.
+var getApiResponseImageFunc = imageFunc
+
+func imageFunc(args []string) string {
 	userArgs := strings.Join(args[0:], " ")
 
 	ctx := context.Background()
@@ -54,7 +57,7 @@ func getApiResponseImage(args []string) string {
 	CheckNilError(err)
 	defer client.Close()
 
-	currentGenaiModel := GetConfig("genai_model")
+	currentGenaiModel := GetConfigFunc("genai_model")
 	model := client.GenerativeModel(currentGenaiModel)
 
 	imgData, err := os.ReadFile(imageFilePath)
@@ -71,7 +74,6 @@ func getApiResponseImage(args []string) string {
 
 	finalResponse := resp.Candidates[0].Content.Parts[0]
 	return fmt.Sprint(finalResponse)
-
 }
 
 func init() {
