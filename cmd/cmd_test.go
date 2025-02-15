@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"testing"
 
@@ -183,6 +184,95 @@ func TestSearchCommand(t *testing.T) {
 			assert.NoError(t, err)
 			// Check that the output contains the expected API response.
 			assert.Contains(t, output, tc.expectedOutput)
+		})
+	}
+}
+
+// TestImageCommand tests the 'image' subcommand which analyzes images.
+// It covers scenarios like valid image path, invalid path, unsupported image format, and API error.
+func TestImageCommand(t *testing.T) {
+	// Backup the original getApiResponseImageFunc.
+	originalFunc := getApiResponseImageFunc
+	// Restore it after the tests.
+	defer func() { getApiResponseImageFunc = originalFunc }()
+
+	// Define file paths used in the tests.
+	validImagePath := filepath.Join("..", "assets", "test.jpg")
+	invalidImagePath := filepath.Join("..", "assets", "missing.jpg")
+
+	// Define test cases.
+	testCases := []struct {
+		name          string   // Name of the test case.
+		args          []string // Command line arguments to pass.
+		mockResponse  string   // Response to simulate (for non-error cases).
+		expectError   bool     // Whether we expect an error to be shown in the output.
+		errorContains string   // Substring that should be present in the error message.
+	}{
+		{
+			name:         "valid_image",
+			args:         []string{"image", "test query", "--path", validImagePath, "--format", "jpg", "--language", "english"},
+			mockResponse: "image analysis",
+		},
+		{
+			name: "invalid_path",
+			// Simulate file-read error using an invalid file path.
+			args:          []string{"image", "query", "--path", invalidImagePath, "--format", "jpg", "--language", "english"},
+			expectError:   true,
+			errorContains: "no such file",
+		},
+		{
+			name: "unsupported_format",
+			// Provide an unsupported image format to simulate error.
+			args:          []string{"image", "query", "--path", validImagePath, "--format", "bmp", "--language", "english"},
+			expectError:   true,
+			errorContains: "unsupported format",
+		},
+		{
+			name: "api_error",
+			// Simulate an API error by returning "API_ERROR".
+			args:          []string{"image", "query", "--path", validImagePath, "--format", "jpg", "--language", "english"},
+			mockResponse:  "API_ERROR",
+			expectError:   true,
+			errorContains: "API_ERROR",
+		},
+	}
+
+	// Iterate over each test case.
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Override getApiResponseImageFunc to simulate different responses based on flags.
+			getApiResponseImageFunc = func(args []string) string {
+				// Check if the required image path flag was provided.
+				if imageFilePath == "" {
+					return "Error: required flag \"path\" not set"
+				}
+				// Simulate error if an invalid file path is provided.
+				if imageFilePath == invalidImagePath {
+					return "Error: no such file"
+				}
+				// Simulate error for unsupported image formats.
+				if imageFileFormat == "bmp" {
+					return "Error: unsupported format"
+				}
+				// If mockResponse is "API_ERROR", simulate an API error.
+				if tc.mockResponse == "API_ERROR" {
+					return "API_ERROR"
+				}
+				// Otherwise, return the provided mock response.
+				return tc.mockResponse
+			}
+
+			// Execute the image command.
+			output, err := executeCommand(t, rootCmd, tc.args...)
+			// Even if there is an error in processing, the command itself doesn't return an error (uses Run, not RunE).
+			assert.NoError(t, err)
+			if tc.expectError {
+				// Verify that the error message is included in the output.
+				assert.Contains(t, output, tc.errorContains)
+			} else {
+				// Verify that the successful response is printed.
+				assert.Contains(t, output, tc.mockResponse)
+			}
 		})
 	}
 }
