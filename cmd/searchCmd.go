@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -15,8 +16,11 @@ import (
 )
 
 var (
-	numWords       string = "150"
-	outputLanguage string = "english"
+	numWords       string
+	outputLanguage string
+	temperature    float32
+	saveOutput     bool
+	outputFile     string
 )
 
 var searchCmd = &cobra.Command{
@@ -27,9 +31,24 @@ var searchCmd = &cobra.Command{
 	Args:    cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		res := getApiResponseFunc(args)
-		fmt.Println(res)
+
+		if saveOutput {
+			// Create directory if it doesn't exist
+			dir := filepath.Dir(outputFile)
+			if dir != "." {
+				err := os.MkdirAll(dir, 0755)
+				CheckNilError(err)
+			}
+
+			err := os.WriteFile(outputFile, []byte(res), 0644)
+			CheckNilError(err)
+			fmt.Printf("Response saved to: %s\n", outputFile)
+		} else {
+			fmt.Println(res)
+		}
 	},
 }
+
 
 // This function is used to get the response from the GenAI API, and was created to allow for testing.
 var getApiResponseFunc = getApiResponse
@@ -50,6 +69,7 @@ func getApiResponse(args []string) string {
 
 	currentGenaiModel := GetConfigFunc("genai_model")
 	model := client.GenerativeModel(currentGenaiModel)
+	model.SetTemperature(temperature)
 	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+" in "+numWords+" words"+" in "+outputLanguage+" language"))
 	CheckNilError(err)
 
@@ -85,4 +105,7 @@ func formatAsPlainText(input string) string {
 func init() {
 	searchCmd.Flags().StringVarP(&numWords, "words", "w", "150", "Number of words in the response")
 	searchCmd.Flags().StringVarP(&outputLanguage, "language", "l", "english", "Output language")
+	searchCmd.Flags().Float32VarP(&temperature, "temperature", "t", 0.5, "Response creativity (0.0-1.0)")
+	searchCmd.Flags().BoolVarP(&saveOutput, "save", "s", false, "Save the output to a file")
+	searchCmd.Flags().StringVarP(&outputFile, "output", "o", "output.txt", "Output file name")
 }
