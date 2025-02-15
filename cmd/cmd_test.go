@@ -9,6 +9,7 @@ import (
 	"runtime"
 	"testing"
 
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -275,4 +276,107 @@ func TestImageCommand(t *testing.T) {
 			}
 		})
 	}
+}
+
+// TestModelCommand tests the 'model' subcommand which allows the user to change the current model.
+// It simulates user selection using the survey package and verifies that the configuration is updated.
+func TestModelCommand(t *testing.T) {
+	// Backup the original functions to allow restoration later.
+	originalSurveyAskOne := surveyAskOne
+	originalGetConfigFunc := GetConfigFunc
+	originalUpdateConfigFunc := UpdateConfigFunc
+
+	// Restore the original functions after tests.
+	defer func() {
+		surveyAskOne = originalSurveyAskOne
+		GetConfigFunc = originalGetConfigFunc
+		UpdateConfigFunc = originalUpdateConfigFunc
+	}()
+
+	// Setup an in-memory configuration map for testing purposes.
+	testConfig := make(map[string]string)
+	GetConfigFunc = func(key string) string {
+		return testConfig[key]
+	}
+	UpdateConfigFunc = func(key, value string) {
+		testConfig[key] = value
+	}
+
+	// Define test cases for different model selections.
+	testCases := []struct {
+		name            string // Test case name.
+		mockSelection   string // Simulated user input from the survey.
+		expectedModel   string // Expected model configuration after the command.
+		expectedMessage string // Expected output message indicating model update.
+	}{
+		{
+			name:            "select_gemini_2.0_flash",
+			mockSelection:   "Gemini 2.0 Flash",
+			expectedModel:   "gemini-2.0-flash",
+			expectedMessage: "Model updated to: gemini-2.0-flash",
+		},
+		{
+			name:            "select_gemini_1.5_pro",
+			mockSelection:   "Gemini 1.5 Pro",
+			expectedModel:   "gemini-1.5-pro",
+			expectedMessage: "Model updated to: gemini-1.5-pro",
+		},
+		{
+			name:            "invalid_selection_default",
+			mockSelection:   "Invalid Model",
+			expectedModel:   "gemini-1.5-flash", // Default model in case of an invalid selection.
+			expectedMessage: "Model updated to: gemini-1.5-flash",
+		},
+	}
+
+	// Iterate over each model selection test case.
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Override surveyAskOne to simulate the user's selection.
+			surveyAskOne = func(p survey.Prompt, response interface{}, opts ...survey.AskOpt) error {
+				resp := response.(*string)
+				*resp = tc.mockSelection
+				return nil
+			}
+
+			// Set an initial model configuration.
+			testConfig["genai_model"] = "gemini-1.5-flash"
+
+			// Execute the model command.
+			output, err := executeCommand(t, rootCmd, "model")
+			require.NoError(t, err)
+
+			// Verify that the output contains the current model and the update message.
+			assert.Contains(t, output, "Current model: gemini-1.5-flash")
+			assert.Contains(t, output, tc.expectedMessage)
+			// Confirm that the configuration has been updated to the expected model.
+			currentModel := GetConfigFunc("genai_model")
+			assert.Equal(t, tc.expectedModel, currentModel)
+		})
+	}
+
+	// Test to ensure that the 'model' command is registered with the root command.
+	t.Run("command_registration", func(t *testing.T) {
+		found := false
+		for _, cmd := range rootCmd.Commands() {
+			if cmd.Name() == "model" {
+				found = true
+				break
+			}
+		}
+		assert.True(t, found, "model command should be registered")
+	})
+}
+
+// TestErrorHandling tests how the CLI handles invalid commands.
+// It verifies that an appropriate error message is shown when an unknown command is used.
+func TestErrorHandling(t *testing.T) {
+	t.Run("invalid_command", func(t *testing.T) {
+		// Attempt to execute a command that doesn't exist.
+		_, err := executeCommand(t, rootCmd, "invalid-command")
+		// Verify that an error is returned.
+		assert.Error(t, err)
+		// Check that the error message mentions "unknown command".
+		assert.Contains(t, err.Error(), "unknown command")
+	})
 }
