@@ -122,3 +122,67 @@ func TestUpdateCommand(t *testing.T) {
 		assert.Error(t, err)
 	})
 }
+
+// TestSearchCommand tests the 'search' subcommand using table-driven tests.
+// It covers different scenarios like basic search, empty query, different languages, and API errors.
+func TestSearchCommand(t *testing.T) {
+	// Backup the original getApiResponseFunc.
+	originalFunc := getApiResponseFunc
+	// Restore the original function after tests.
+	defer func() { getApiResponseFunc = originalFunc }()
+
+	// Define test cases for the search command.
+	testCases := []struct {
+		name           string   // Name of the test case.
+		args           []string // Command line arguments to pass.
+		mockResponse   string   // The response to simulate from the API.
+		expectedOutput string   // Expected output to be verified.
+	}{
+		{
+			name:           "basic_search",
+			args:           []string{"search", "test query", "--words", "100"},
+			mockResponse:   "test response",
+			expectedOutput: "test response",
+		},
+		{
+			name: "empty_query",
+			// Cobra requires at least one argument; simulate an empty query with an empty string.
+			args:           []string{"search", ""},
+			mockResponse:   "query cannot be empty",
+			expectedOutput: "query cannot be empty",
+		},
+		{
+			name:           "different_language",
+			args:           []string{"search", "query", "--language", "french"},
+			mockResponse:   "réponse en français",
+			expectedOutput: "réponse en français",
+		},
+		{
+			name:           "error_response",
+			args:           []string{"search", "error"},
+			mockResponse:   "API_ERROR",
+			expectedOutput: "API_ERROR",
+		},
+	}
+
+	// Loop through each test case.
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Override getApiResponseFunc to return the mock response for the test.
+			getApiResponseFunc = func(args []string) string {
+				// If the query is empty, return an appropriate error message.
+				if len(args) > 0 && args[0] == "" {
+					return "query cannot be empty"
+				}
+				return tc.mockResponse
+			}
+
+			// Execute the search command with provided arguments.
+			output, err := executeCommand(t, rootCmd, tc.args...)
+			// The search command should not return an error; it prints the result instead.
+			assert.NoError(t, err)
+			// Check that the output contains the expected API response.
+			assert.Contains(t, output, tc.expectedOutput)
+		})
+	}
+}

@@ -26,10 +26,13 @@ var searchCmd = &cobra.Command{
 	Long:    "Ask a question and get a response in a specified number of words. The default number of words is 150. You can change the number of words by using the --words flag.",
 	Args:    cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		res := getApiResponse(args)
+		res := getApiResponseFunc(args)
 		fmt.Println(res)
 	},
 }
+
+// This function is used to get the response from the GenAI API, and was created to allow for testing.
+var getApiResponseFunc = getApiResponse
 
 func getApiResponse(args []string) string {
 	userArgs := strings.Join(args[0:], " ")
@@ -45,7 +48,7 @@ func getApiResponse(args []string) string {
 		log.Fatal("Invalid number of words")
 	}
 
-	currentGenaiModel := GetConfig("genai_model")
+	currentGenaiModel := GetConfigFunc("genai_model")
 	model := client.GenerativeModel(currentGenaiModel)
 	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+" in "+numWords+" words"+" in "+outputLanguage+" language"))
 	CheckNilError(err)
