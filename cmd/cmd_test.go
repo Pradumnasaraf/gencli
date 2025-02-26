@@ -72,7 +72,7 @@ func TestVersionCommand(t *testing.T) {
 		// Check that no error occurred during execution.
 		assert.NoError(t, err)
 		// Verify that the output contains the expected version (e.g., "v1.6.3").
-		assert.Contains(t, output, "v1.6.3")
+		assert.Contains(t, output, CliVersion)
 	})
 }
 
