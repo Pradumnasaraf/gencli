@@ -49,7 +49,6 @@ var searchCmd = &cobra.Command{
 	},
 }
 
-
 // This function is used to get the response from the GenAI API, and was created to allow for testing.
 var getApiResponseFunc = getApiResponse
 
