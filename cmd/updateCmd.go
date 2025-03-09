@@ -12,7 +12,7 @@ var (
 	// execCommand is a variable for creating commands. It can be overridden in tests.
 	execCommand = exec.Command
 
-	// exitFunc wraps os.Exit so that it can be overridden in tests if needed.
+	//nolint:unused // exitFunc wraps os.Exit so that it can be overridden in tests if needed.
 	exitFunc = func(code int) {
 		os.Exit(code)
 	}
