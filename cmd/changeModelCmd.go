@@ -19,7 +19,7 @@ var changeModelCmd = &cobra.Command{
 
 func setModelConfig() {
 
-	currentGenaiModel := GetConfig("genai_model")
+	currentGenaiModel := GetConfigFunc("genai_model")
 	fmt.Println("Current model:", currentGenaiModel)
 
 	options := []string{"Gemini 2.0 Flash", "Gemini 2.0 Flash-Lite Preview", "Gemini 1.5 Flash", "Gemini 1.5 Flash-8B", "Gemini 1.5 Pro"}
@@ -30,7 +30,7 @@ func setModelConfig() {
 		Options: options,
 	}
 
-	err := survey.AskOne(prompt, &selected)
+	err := surveyAskOne(prompt, &selected)
 	CheckNilError(err)
 
 	switch selected {
@@ -47,7 +47,7 @@ func setModelConfig() {
 	default:
 		selected = "gemini-1.5-flash"
 	}
-	UpdateConfig("genai_model", selected)
+	UpdateConfigFunc("genai_model", selected)
 
 	fmt.Println("Model updated to:", selected)
 }
