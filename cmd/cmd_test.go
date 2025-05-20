@@ -316,16 +316,16 @@ func TestModelCommand(t *testing.T) {
 			expectedMessage: "Model updated to: gemini-2.0-flash",
 		},
 		{
-			name:            "select_gemini_1.5_pro",
-			mockSelection:   "Gemini 1.5 Pro",
-			expectedModel:   "gemini-1.5-pro",
-			expectedMessage: "Model updated to: gemini-1.5-pro",
+			name:            "select_gemini_2.0_flash_lite",
+			mockSelection:   "Gemini 2.0 Flash-Lite Preview",
+			expectedModel:   "gemini-2.0-flash-lite",
+			expectedMessage: "Model updated to: gemini-2.0-flash-lite",
 		},
 		{
 			name:            "invalid_selection_default",
 			mockSelection:   "Invalid Model",
-			expectedModel:   "gemini-1.5-flash", // Default model in case of an invalid selection.
-			expectedMessage: "Model updated to: gemini-1.5-flash",
+			expectedModel:   "gemini-2.0-flash", // Default model in case of an invalid selection.
+			expectedMessage: "Model updated to: gemini-2.0-flash",
 		},
 	}
 
