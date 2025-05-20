@@ -12,7 +12,7 @@ var (
 	configFileDir  string = ".gencli"
 	configFileName string = "config"
 	configFileType string = "yaml"
-	defaultModel   string = "gemini-1.5-flash"
+	defaultModel   string = "gemini-2.0-flash"
 )
 
 func SetDefaultConfig() {
