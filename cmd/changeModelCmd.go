@@ -22,7 +22,7 @@ func setModelConfig() {
 	currentGenaiModel := GetConfigFunc("genai_model")
 	fmt.Println("Current model:", currentGenaiModel)
 
-	options := []string{"Gemini 2.5 Flash Preview 04-17", "Gemini 2.0 Flash", "Gemini 2.0 Flash-Lite Preview"}
+	options := []string{"Gemini 2.5 Pro", "Gemini 2.5 Flash", "Gemini 2.5 Flash-Lite", "Gemini 2.0 Flash", "Gemini 2.0 Flash-Lite"}
 
 	var selected string
 	prompt := &survey.Select{
@@ -34,14 +34,18 @@ func setModelConfig() {
 	CheckNilError(err)
 
 	switch selected {
-	case "Gemini 2.5 Flash Preview 04-17":
-		selected = "gemini-2.5-flash-preview-04-17"
+	case "Gemini 2.5 Pro":
+		selected = "gemini-2.5-pro"
+	case "Gemini 2.5 Flash":
+		selected = "gemini-2.5-flash"
+	case "Gemini 2.5 Flash-Lite":
+		selected = "gemini-2.5-flash-lite"
 	case "Gemini 2.0 Flash":
 		selected = "gemini-2.0-flash"
-	case "Gemini 2.0 Flash-Lite Preview":
+	case "Gemini 2.0 Flash-Lite":
 		selected = "gemini-2.0-flash-lite"
 	default:
-		selected = "gemini-2.0-flash"
+		selected = "gemini-2.5-pro"
 	}
 	UpdateConfigFunc("genai_model", selected)
 

@@ -316,16 +316,16 @@ func TestModelCommand(t *testing.T) {
 			expectedMessage: "Model updated to: gemini-2.0-flash",
 		},
 		{
-			name:            "select_gemini_2.0_flash_lite",
-			mockSelection:   "Gemini 2.0 Flash-Lite Preview",
-			expectedModel:   "gemini-2.0-flash-lite",
-			expectedMessage: "Model updated to: gemini-2.0-flash-lite",
+			name:            "select_gemini_2.5_pro",
+			mockSelection:   "Gemini 2.5 Pro",
+			expectedModel:   "gemini-2.5-pro",
+			expectedMessage: "Model updated to: gemini-2.5-pro",
 		},
 		{
 			name:            "invalid_selection_default",
 			mockSelection:   "Invalid Model",
-			expectedModel:   "gemini-2.0-flash", // Default model in case of an invalid selection.
-			expectedMessage: "Model updated to: gemini-2.0-flash",
+			expectedModel:   "gemini-2.5-pro", // Default model in case of an invalid selection.
+			expectedMessage: "Model updated to: gemini-2.5-pro",
 		},
 	}
 
@@ -340,14 +340,14 @@ func TestModelCommand(t *testing.T) {
 			}
 
 			// Set an initial model configuration.
-			testConfig["genai_model"] = "gemini-1.5-flash"
+			testConfig["genai_model"] = "gemini-2.0-flash"
 
 			// Execute the model command.
 			output, err := executeCommand(t, rootCmd, "model")
 			require.NoError(t, err)
 
 			// Verify that the output contains the current model and the update message.
-			assert.Contains(t, output, "Current model: gemini-1.5-flash")
+			assert.Contains(t, output, "Current model: gemini-2.0-flash")
 			assert.Contains(t, output, tc.expectedMessage)
 			// Confirm that the configuration has been updated to the expected model.
 			currentModel := GetConfigFunc("genai_model")
