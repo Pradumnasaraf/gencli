@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -61,15 +60,6 @@ func GetConfig(key string) string {
 	}
 
 	return viper.GetString(key)
-}
-
-func CheckAPIKey() {
-	googleGeminiAPIKey := os.Getenv("GOOGLE_API_KEY")
-
-	if googleGeminiAPIKey == "" {
-		fmt.Println("Please set the GOOGLE_API_KEY environment variable. Check the README for more information.")
-		return
-	}
 }
 
 func getHomeDir() string {
