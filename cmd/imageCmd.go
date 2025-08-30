@@ -53,7 +53,7 @@ func imageFunc(args []string) string {
 	userArgs := strings.Join(args[0:], " ")
 
 	ctx := context.Background()
-	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
+	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GOOGLE_API_KEY")))
 	CheckNilError(err)
 	defer client.Close()
 

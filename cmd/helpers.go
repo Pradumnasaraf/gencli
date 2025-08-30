@@ -64,10 +64,10 @@ func GetConfig(key string) string {
 }
 
 func CheckAPIKey() {
-	geminiAPIKey := os.Getenv("GEMINI_API_KEY")
+	googleGeminiAPIKey := os.Getenv("GOOGLE_API_KEY")
 
-	if geminiAPIKey == "" {
-		fmt.Println("Please set the GEMINI_API_KEY environment variable. Check the README for more information.")
+	if googleGeminiAPIKey == "" {
+		fmt.Println("Please set the GOOGLE_API_KEY environment variable. Check the README for more information.")
 		return
 	}
 }

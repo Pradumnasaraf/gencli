@@ -21,7 +21,7 @@ func TestMain(m *testing.M) {
 	// Create a dummy testing.T instance to set environment variables.
 	t := &testing.T{}
 	// Set a dummy API key so that API calls in tests don't fail.
-	t.Setenv("GEMINI_API_KEY", "test-key")
+	t.Setenv("GOOGLE_API_KEY", "test-key")
 
 	// Run all tests.
 	os.Exit(m.Run())
