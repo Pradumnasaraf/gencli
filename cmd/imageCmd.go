@@ -66,7 +66,7 @@ func imageFunc(args []string) string {
 	// Supports image + text input
 	parts := []*genai.Part{
 		genai.NewPartFromBytes(imgData, "image/"+imageFileFormat),
-		genai.NewPartFromText(fmt.Sprintf(userArgs, " in ", respOutputLanguage, " language")),
+		genai.NewPartFromText(userArgs + " in " + respOutputLanguage + " language"),
 	}
 	contents := []*genai.Content{genai.NewContentFromParts(parts, genai.RoleUser)}
 
