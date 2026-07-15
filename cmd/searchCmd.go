@@ -10,9 +10,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/google/generative-ai-go/genai"
 	"github.com/spf13/cobra"
-	"google.golang.org/api/option"
+	"google.golang.org/genai"
 )
 
 var (
@@ -56,9 +55,11 @@ func getApiResponse(args []string) string {
 	userArgs := strings.Join(args[0:], " ")
 
 	ctx := context.Background()
-	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GOOGLE_API_KEY")))
+	client, err := genai.NewClient(ctx, &genai.ClientConfig{
+		APIKey:  os.Getenv("GOOGLE_API_KEY"),
+		Backend: genai.BackendGeminiAPI,
+	})
 	CheckNilError(err)
-	defer client.Close()
 
 	// Validate user input is a number
 	_, err = strconv.Atoi(numWords)
@@ -67,14 +68,12 @@ func getApiResponse(args []string) string {
 	}
 
 	currentGenaiModel := GetConfigFunc("genai_model")
-	model := client.GenerativeModel(currentGenaiModel)
-	model.SetTemperature(temperature)
-	resp, err := model.GenerateContent(ctx, genai.Text(userArgs+" in "+numWords+" words"+" in "+outputLanguage+" language"))
+	config := &genai.GenerateContentConfig{Temperature: genai.Ptr(temperature)}
+	prompt := genai.Text(userArgs + " in " + numWords + " words" + " in " + outputLanguage + " language")
+	resp, err := client.Models.GenerateContent(ctx, currentGenaiModel, prompt, config)
 	CheckNilError(err)
 
-	finalResponse := resp.Candidates[0].Content.Parts[0]
-
-	return formatAsPlainText(fmt.Sprint(finalResponse))
+	return formatAsPlainText(resp.Text())
 }
 
 func formatAsPlainText(input string) string {
