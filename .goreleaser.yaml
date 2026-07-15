@@ -14,7 +14,7 @@ builds:
       - darwin
 
 archives:
-  - format: tar.gz
+  - formats: [tar.gz]
     name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
@@ -24,12 +24,12 @@ archives:
       {{- if .Arm }}v{{ .Arm }}{{ end }}
 
     format_overrides:
-    - goos: windows
-      format: zip
+      - goos: windows
+        formats: [zip]
 checksum:
   name_template: 'checksums.txt'
 snapshot:
-  name_template: "{{ incpatch .Version }}-next"
+  version_template: "{{ incpatch .Version }}-next"
 changelog:
   sort: asc
   # filters:
