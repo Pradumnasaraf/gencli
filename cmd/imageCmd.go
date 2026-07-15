@@ -7,9 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/google/generative-ai-go/genai"
 	"github.com/spf13/cobra"
-	"google.golang.org/api/option"
+	"google.golang.org/genai"
 )
 
 var (
@@ -53,27 +52,28 @@ func imageFunc(args []string) string {
 	userArgs := strings.Join(args[0:], " ")
 
 	ctx := context.Background()
-	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GOOGLE_API_KEY")))
+	client, err := genai.NewClient(ctx, &genai.ClientConfig{
+		APIKey:  os.Getenv("GOOGLE_API_KEY"),
+		Backend: genai.BackendGeminiAPI,
+	})
 	CheckNilError(err)
-	defer client.Close()
 
 	currentGenaiModel := GetConfigFunc("genai_model")
-	model := client.GenerativeModel(currentGenaiModel)
 
 	imgData, err := os.ReadFile(imageFilePath)
 	CheckNilError(err)
 
-	// Supports multiple image inputs
-	prompt := []genai.Part{
-		genai.ImageData(imageFileFormat, imgData),
-		genai.Text(fmt.Sprintf(userArgs, " in ", respOutputLanguage, " language")),
+	// Supports image + text input
+	parts := []*genai.Part{
+		genai.NewPartFromBytes(imgData, "image/"+imageFileFormat),
+		genai.NewPartFromText(fmt.Sprintf(userArgs, " in ", respOutputLanguage, " language")),
 	}
+	contents := []*genai.Content{genai.NewContentFromParts(parts, genai.RoleUser)}
 
-	resp, err := model.GenerateContent(ctx, prompt...)
+	resp, err := client.Models.GenerateContent(ctx, currentGenaiModel, contents, nil)
 	CheckNilError(err)
 
-	finalResponse := resp.Candidates[0].Content.Parts[0]
-	return fmt.Sprint(finalResponse)
+	return resp.Text()
 }
 
 func init() {
