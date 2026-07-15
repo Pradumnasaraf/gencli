@@ -37,7 +37,7 @@ Go will automatically install it in your `$GOPATH/bin` directory, which should b
 
 Once installed, you can use the `gencli` CLI command. To confirm installation, type `gencli` at the command line. All the CLI config (like current GenAI Model, etc) is store in `~/.gencli` directory.
 
-GenCLI uses the Google Gemini API, so you need to set the API key. To get the API key (It's FREE), visit [here](https://aistudio.google.com/app/apikey?_gl=1*1n5ijhw*_ga*MTQxNDQ2MjcyNi4xNzE5MDU4OTE0*_ga_P1DBVKWT6V*MTcxOTkzNTQzOC4zLjEuMTcxOTkzNTQ3My4yNS4wLjEzODczMjU2OA) and set it in the environment variable `GOOGLE_API_KEY`:
+GenCLI uses the Google Gemini API, so you need to set the API key. To get the API key (it's FREE), visit [Google AI Studio](https://aistudio.google.com/app/apikey) and set it in the environment variable `GOOGLE_API_KEY`:
 
 ```bash
 export GOOGLE_API_KEY=<API_KEY>
