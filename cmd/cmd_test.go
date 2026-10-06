@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"context"
 	"io"
 	"os"
 	"os/exec"
@@ -277,7 +278,6 @@ func TestImageCommand(t *testing.T) {
 		})
 	}
 }
-
 // TestModelCommand tests the 'model' subcommand which allows the user to change the current model.
 // It simulates user selection using the survey package and verifies that the configuration is updated.
 func TestModelCommand(t *testing.T) {
@@ -285,22 +285,33 @@ func TestModelCommand(t *testing.T) {
 	originalSurveyAskOne := surveyAskOne
 	originalGetConfigFunc := GetConfigFunc
 	originalUpdateConfigFunc := UpdateConfigFunc
+	originalGetModelsFunc := getModelsFunc
 
 	// Restore the original functions after tests.
 	defer func() {
 		surveyAskOne = originalSurveyAskOne
 		GetConfigFunc = originalGetConfigFunc
 		UpdateConfigFunc = originalUpdateConfigFunc
+		getModelsFunc = originalGetModelsFunc
 	}()
 
 	// Setup an in-memory configuration map for testing purposes.
 	testConfig := make(map[string]string)
-	GetConfigFunc = func(key string) string {
-		return testConfig[key]
-	}
-	UpdateConfigFunc = func(key, value string) {
-		testConfig[key] = value
-	}
+		GetConfigFunc = func(key string) string {
+			return testConfig[key]
+		}
+		UpdateConfigFunc = func(key, value string) {
+			testConfig[key] = value
+		}
+
+		// Mock models for testing - these should match the expected test cases.
+		testModels := []ModelInfo{
+			{DisplayName: "Gemini 2.0 Flash", ModelID: "gemini-2.0-flash"},
+			{DisplayName: "Gemini 2.5 Pro", ModelID: "gemini-2.5-pro"},
+		}
+		getModelsFunc = func(ctx context.Context) []ModelInfo {
+			return testModels
+		}
 
 	// Define test cases for different model selections.
 	testCases := []struct {
@@ -349,6 +360,7 @@ func TestModelCommand(t *testing.T) {
 			// Verify that the output contains the current model and the update message.
 			assert.Contains(t, output, "Current model: gemini-2.0-flash")
 			assert.Contains(t, output, tc.expectedMessage)
+
 			// Confirm that the configuration has been updated to the expected model.
 			currentModel := GetConfigFunc("genai_model")
 			assert.Equal(t, tc.expectedModel, currentModel)
