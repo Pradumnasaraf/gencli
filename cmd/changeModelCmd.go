@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -22,7 +23,12 @@ func setModelConfig() {
 	currentGenaiModel := GetConfigFunc("genai_model")
 	fmt.Println("Current model:", currentGenaiModel)
 
-	options := []string{"Gemini 3 Pro", "Gemini 3 Flash", "Gemini 3.5 Flash", "Gemini 2.5 Pro", "Gemini 2.5 Flash", "Gemini 2.5 Flash-Lite", "Gemini 2.0 Flash", "Gemini 2.0 Flash-Lite"}
+	models := getModelsFunc(context.Background())
+
+	options := make([]string, len(models))
+	for i, m := range models {
+		options[i] = m.DisplayName
+	}
 
 	var selected string
 	prompt := &survey.Select{
@@ -33,29 +39,17 @@ func setModelConfig() {
 	err := surveyAskOne(prompt, &selected)
 	CheckNilError(err)
 
-	switch selected {
-	case "Gemini 3 Pro":
-		selected = "gemini-3-pro-preview"
-	case "Gemini 3 Flash":
-		selected = "gemini-3-flash-preview"
-	case "Gemini 3.5 Flash":
-		selected = "gemini-3.5-flash"
-	case "Gemini 2.5 Pro":
-		selected = "gemini-2.5-pro"
-	case "Gemini 2.5 Flash":
-		selected = "gemini-2.5-flash"
-	case "Gemini 2.5 Flash-Lite":
-		selected = "gemini-2.5-flash-lite"
-	case "Gemini 2.0 Flash":
-		selected = "gemini-2.0-flash"
-	case "Gemini 2.0 Flash-Lite":
-		selected = "gemini-2.0-flash-lite"
-	default:
-		selected = "gemini-2.5-pro"
+	// Map selected display name to model ID
+	modelID := defaultModels[3].ModelID // Default to Gemini 2.5 Pro
+	for _, m := range models {
+		if m.DisplayName == selected {
+			modelID = m.ModelID
+			break
+		}
 	}
-	UpdateConfigFunc("genai_model", selected)
 
-	fmt.Println("Model updated to:", selected)
+	UpdateConfigFunc("genai_model", modelID)
+	fmt.Println("Model updated to:", modelID)
 }
 
 func init() {
